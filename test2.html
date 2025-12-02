@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Personnage Pixel Art - Checkpoints</title>
+<style>
+    body {
+        background: #222;
+        height: 100vh;
+        margin: 0;
+        overflow: hidden;
+    }
+
+    #game {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    .character {
+        width: 32px;
+        height: 48px;
+        position: absolute;
+        bottom: 50px;
+        left: 0;
+        image-rendering: pixelated;
+        transition: left 0.02s linear;
+    }
+
+    /* --- SPRITES --- */
+    .idle {
+        background: 
+            linear-gradient(#fff 0 0) 8px 0/16px 8px,
+            linear-gradient(#fff 0 0) 12px 8px/8px 16px,
+            linear-gradient(#0af 0 0) 8px 24px/16px 16px;
+        background-repeat: no-repeat;
+    }
+
+    .walk1 {
+        background:
+            linear-gradient(#fff 0 0) 8px 0/16px 8px,
+            linear-gradient(#fff 0 0) 12px 8px/8px 16px,
+            linear-gradient(#0af 0 0) 6px 24px/20px 10px,
+            linear-gradient(#0af 0 0) 6px 34px/6px 10px;
+        background-repeat: no-repeat;
+    }
+
+    .walk2 {
+        background:
+            linear-gradient(#fff 0 0) 8px 0/16px 8px,
+            linear-gradient(#fff 0 0) 12px 8px/8px 16px,
+            linear-gradient(#0af 0 0) 6px 24px/20px 10px,
+            linear-gradient(#0af 0 0) 20px 34px/6px 10px;
+        background-repeat: no-repeat;
+    }
+</style>
+</head>
+<body>
+
+<div id="game">
+    <div id="character" class="character idle"></div>
+</div>
+
+<script>
+    const character = document.getElementById("character");
+
+    /* ---- CONFIG DES CHECKPOINTS ---- */
+    const checkpoints = [0, 200, 400, 650, 900];  
+    let currentCheckpoint = 0;
+
+    /* ---- ANIMATION ---- */
+    let frame = 0;
+    let walking = false;
+    let lastFrameTime = 0;
+    const frameDelay = 120; // ms entre les frames (ralentit l’animation)
+
+    function animateWalk(targetX) {
+        if (!walking) return;
+
+        const now = performance.now();
+
+        // Changer de frame uniquement toutes les 120 ms
+        if (now - lastFrameTime > frameDelay) {
+            character.className = "character " + (frame === 0 ? "walk1" : "walk2");
+            frame = 1 - frame;
+            lastFrameTime = now;
+        }
+
+        // Avancement fluide
+        let posX = parseInt(character.style.left || 0);
+        posX += 4;
+        character.style.left = posX + "px";
+
+        // Arrivé au checkpoint
+        if (posX >= targetX) {
+            character.style.left = targetX + "px";
+            walking = false;
+            character.className = "character idle";
+            return;
+        }
+
+        requestAnimationFrame(() => animateWalk(targetX));
+    }
+
+    /* ---- INPUT ---- */
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight" && !walking) {
+            if (currentCheckpoint < checkpoints.length - 1) {
+                currentCheckpoint++;
+                let target = checkpoints[currentCheckpoint];
+
+                walking = true;
+                frame = 0; // reset frame
+                lastFrameTime = 0;
+                animateWalk(target);
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

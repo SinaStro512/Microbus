@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Personnage Pixel Art - Déplacement</title>
+<style>
+    body {
+        background: #222;
+        height: 100vh;
+        margin: 0;
+        overflow: hidden;
+    }
+
+    #game {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    .character {
+        width: 32px;
+        height: 48px;
+        position: absolute;
+        bottom: 50px;
+        left: 0;
+        image-rendering: pixelated;
+        transition: left 0.02s linear;
+    }
+
+    /* --- SPRITES EN PIXELS --- */
+    .idle {
+        background: 
+            linear-gradient(#fff 0 0) 8px 0/16px 8px,
+            linear-gradient(#fff 0 0) 12px 8px/8px 16px,
+            linear-gradient(#0af 0 0) 8px 24px/16px 16px;
+        background-repeat: no-repeat;
+    }
+
+    .walk1 {
+        background:
+            linear-gradient(#fff 0 0) 8px 0/16px 8px,
+            linear-gradient(#fff 0 0) 12px 8px/8px 16px,
+            linear-gradient(#0af 0 0) 6px 24px/20px 10px,
+            linear-gradient(#0af 0 0) 6px 34px/6px 10px;
+        background-repeat: no-repeat;
+    }
+
+    .walk2 {
+        background:
+            linear-gradient(#fff 0 0) 8px 0/16px 8px,
+            linear-gradient(#fff 0 0) 12px 8px/8px 16px,
+            linear-gradient(#0af 0 0) 6px 24px/20px 10px,
+            linear-gradient(#0af 0 0) 20px 34px/6px 10px;
+        background-repeat: no-repeat;
+    }
+</style>
+</head>
+<body>
+
+<div id="game">
+    <div id="character" class="character idle"></div>
+</div>
+
+<script>
+    const character = document.getElementById("character");
+
+    let posX = 0;
+    let walking = false;
+    let frame = 0;
+	let lastFrameTime = 0;
+	const frameDelay = 120; // durée en ms entre deux frames (augmente pour ralentir)
+
+    function animateWalk() {
+        if (!walking) return;
+
+        // alterne entre walk1 et walk2
+        const now = performance.now();
+if (now - lastFrameTime > frameDelay) {
+    character.className = "character " + (frame === 0 ? "walk1" : "walk2");
+    frame = 1 - frame;
+    lastFrameTime = now;
+}
+
+        posX += 4;
+        character.style.left = posX + "px";
+
+        // arrêter si on atteint le bord droit
+        if (posX < window.innerWidth - 40) {
+            requestAnimationFrame(animateWalk);
+        } else {
+            walking = false;
+            character.className = "character idle";
+        }
+    }
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight" && !walking) {
+            walking = true;
+            frame = 0;
+            animateWalk();
+        }
+    });
+</script>
+
+</body>
+</html>
