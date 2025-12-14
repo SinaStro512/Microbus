@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Jersey+10&display=swap');
+
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  background: rgb(57, 75, 130);
+  background-image: url('images/bg.png');
+  background-size: 110% auto;
+  background-position: 0% 70%; /* 0% collé a gauche, 50% centré, 100% collé à droite... */
+  overflow: hidden;
+}
+
+.content {
+  display: flex;
+  width: 400%; /* +100% par slide */
+  height: 100%;
+  margin-left: 0;
+}
+
+.slides {
+  width: 100%;
+  height: 100vh;
+}
+
+.line {
+  position: fixed;
+  width: 100%;
+  height: 15%;
+  bottom: 0;
+}
+
+.grass {
+  position: absolute;
+  width: 160%; /* +20% par slide en plus */
+  height: 100%;
+  bottom: 0;
+  margin-left: 0;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  background-image: url('images/grass.png');
+  background-repeat: repeat-x;
+  background-size: auto 40%;
+  background-position: bottom;
+  z-index: 1;
+}
+
+.character {
+  position: absolute;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  height: 80%;
+  transform: translateX(-50%);
+  margin-left: 50%;
+  margin-bottom: 20%;
+}
