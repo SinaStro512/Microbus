@@ -5,7 +5,7 @@ body {
   width: 100%;
   margin: 0;
   padding: 0;
-  image-rendering: pixelated;
+  /* image-rendering: pixelated;
   image-rendering: crisp-edges;
   background: rgb(57, 75, 130);
   background-image: url('images/bg.png');
@@ -14,16 +14,32 @@ body {
   overflow: hidden;
 }
 
+#content, #grass, #bg {
+  transition: transform 3s linear;
+}
+
+#bg {
+  position: absolute;
+  width: 110%;
+  bottom: -15%;
+  left: 0;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  z-index: 1;
+}
+
 .content {
   display: flex;
-  width: 400%; /* +100% par slide */
+  width: 500%; /* +100% par slide */
   height: 100%;
-  margin-left: 0;
+  left: 0;
+  z-index: 2;
 }
 
 .slides {
   width: 100%;
   height: 100vh;
+  z-index: 2;
 }
 
 .line {
@@ -31,21 +47,22 @@ body {
   width: 100%;
   height: 15%;
   bottom: 0;
+  z-index: 3;
 }
 
 .grass {
   position: absolute;
-  width: 160%; /* +20% par slide en plus */
+  width: 180%; /* +20% par slide en plus */
   height: 100%;
   bottom: 0;
-  margin-left: 0;
+  left: 0;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
   background-image: url('images/grass.png');
   background-repeat: repeat-x;
   background-size: auto 40%;
   background-position: bottom;
-  z-index: 1;
+  z-index: 4;
 }
 
 .character {
